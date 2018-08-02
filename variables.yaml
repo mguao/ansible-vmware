@@ -1,0 +1,36 @@
+---
+vcenter:
+  hostname: vcenterhostname 
+  username: vcenterusername
+  password: vcenterpassword
+  folder: /folder
+  datacenter: datacenter
+
+serverlist:
+  - name: hostname
+    state: poweredon
+    template: template
+    disksize: 100
+    disktype: thin
+    datastore: <datastore>
+    memory: 4024
+    num_cpus: 2
+    num_cpu_per_socket: 2
+    networktype: static
+    networkip: <IP>
+    networkgateway: <gateway>
+    networknetmask: 255.255.255.0
+
+  - name: hostname2
+    state: poweredon
+    template: template
+    disksize: 100
+    disktype: thin
+    datastore: <datastore>
+    memory: 4024
+    num_cpus: 2
+    num_cpu_per_socket: 2
+    networktype: static
+    networkip: <IP>
+    networkgateway: <gateway>
+    networknetmask: 255.255.255.0

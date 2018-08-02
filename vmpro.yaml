@@ -1,0 +1,49 @@
+---
+- name: Create a VM from a template host
+  hosts: localhost
+  gather_facts: False
+  vars_files:
+    - variables.yml
+
+  tasks:
+
+    - name: provisioning VM
+      vmware_guest:
+        datacenter: "{{ vcenter.datacenter }}"
+        hostname: "{{ vcenter.hostname }}"
+        username: "{{ vcenter.username }}"
+        password: "{{ vcenter.password }}"
+        validate_certs: no
+        folder: "{{ vcenter.folder }}"
+        name: "{{ item.name }}"
+        state: "{{ item.state }}"
+        template: "{{ item.template }}"
+
+        disk:
+        - size_gb: "{{ item.disksize }}"
+          type: "{{ item.disktype }}"
+          datastore: "{{ item.datastore }}"
+
+        hardware:
+          memory_mb: "{{ item.memory }}"
+          num_cpus: "{{ item.num_cpus }}"
+          num_cpu_cores_per_socket: "{{ item.num_cpu_per_socket }}"
+        networks:
+        - name: VM Network
+          type: "{{ item.networktype }}"
+          ip: "{{ item.networkip }}"
+          netmask: "{{ item.networknetmask }}"
+          gateway: "{{ item.networkgateway }}"
+        wait_for_ip_address: no
+      delegate_to: localhost
+      with_items: "{{ serverlist }}"
+
+    - name: 60 seconds pause for server to boot
+      pause:
+        seconds: 60
+
+- name: Apply common configuration
+  hosts: all
+  remote_user: root
+  roles:
+    - common

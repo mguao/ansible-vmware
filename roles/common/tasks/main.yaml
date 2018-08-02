@@ -1,0 +1,7 @@
+---
+
+- name: create ansible user
+  user:
+    name: ansible
+    state: present
+
